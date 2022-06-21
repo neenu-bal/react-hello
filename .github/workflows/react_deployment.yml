@@ -1,0 +1,65 @@
+# This is a basic workflow to help you get started with Actions
+
+name: ReactJs Node Deployment
+
+on:
+  pull_request:
+    branches: [ "DEVELOPMENT" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build
+      run: npm run build
+
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    env:
+       PR_NUMBER: ${{ github.event.number }}
+
+ # Secrets to be created in repository  Secret & Hostname & Username      
+    steps:
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          HOSTNAME: ${{ secrets.HOSTNAME }}
+          USER_NAME: ${{ secrets.USERNAME }}
+          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "my-app/"
+          target: "/home/ubuntu/rcx/${{ PR_NUMBER }}"
+    
+      - uses: actions/checkout@v2 
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+            HOSTNAME : ${{ secrets.HOSTNAME  }}
+            USER_NAME : ${{ secrets.USER_NAME  }}
+     
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          
+            cd /home/ubuntu/rcx/${{ PR_NUMBER }} &&
+            node start app.js
+
+
+
