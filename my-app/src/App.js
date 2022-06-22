@@ -1,14 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
+import Widget from './component/widgetcomponent';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Hello Indium test
-        </p>
-       
+        
+       <Widget name="Hi Indium"/>
       </header>
     </div>
   );
