@@ -4,10 +4,10 @@ import Widget from './component/widgetcomponent';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        
-       <Widget name="Hi Indium, Gud Mng"/>
+      <header >
+       <Widget name="Service providers List"/>
       </header>
+      
     </div>
   );
 }
