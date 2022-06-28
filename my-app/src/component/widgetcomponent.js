@@ -6,7 +6,8 @@ function Widget(props) {
   useEffect(() => {
     const fetchData = async () =>{
 
-      const result = await fetch(`http://localhost:9005/`)
+      //const result = await fetch(`http://localhost:9005/`)
+      const result = await fetch(`http://ec2-3-110-85-74.ap-south-1.compute.amazonaws.com:9000/`)
       const jsonData = await result.json();
       console.log("data", jsonData)
       setProviders(jsonData.data);
