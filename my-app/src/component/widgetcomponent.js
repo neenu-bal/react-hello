@@ -23,8 +23,8 @@ const result = await fetch(`http://ec2-3-110-85-74.ap-south-1.compute.amazonaws.
       <div className="table-cont">
       <table >
         <thead>
-        <td className="Value" >Provider Name</td>  
-        <td className="Value" > Provider Count</td>  
+        <td className="Value" > Name</td>  
+        <td className="Value" > Count</td>  
 
 
         </thead>
